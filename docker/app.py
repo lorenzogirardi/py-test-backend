@@ -17,13 +17,25 @@ context = [
     {
         'id': 1,
         'title': u'Cento 6',
-        'description': u'SystemV based', 
+        'description': u'RHEL 6 based', 
         'done': False
     },
     {
         'id': 2,
         'title': u'Centos 7',
-        'description': u'SystemD based', 
+        'description': u'RHEL 7 based', 
+        'done': False
+    },
+    {
+        'id': 3,
+        'title': u'Centos 8',
+        'description': u'RHEL 8 based', 
+        'done': False
+    },
+    {
+        'id': 4,
+        'title': u'Centos stream',
+        'description': u'Fedora + RHEL based', 
         'done': False
     }
 ]
@@ -94,3 +106,4 @@ def delete_task(task_id):
     
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0")
+
