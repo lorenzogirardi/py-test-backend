@@ -2,15 +2,14 @@
 
 Working most of the times (always) in Platform i'm usually play with the infrastructure, however sometimes to create prototype i need backends that are done for the specific purpose.  
 
-GOALS:
+## GOALS:
  - The application must be a REST api
  - Run in kubernetes
 <br/><br/>
-
-
+<br/><br/>
+### Docker and kubernetes  
 The application is working with GET, POST, PUT, DELETE  
 enouth to cover most of the usages based on rest api.  
-
 
 Inside the docker path you can run easly as local docker  
 
@@ -58,4 +57,124 @@ TIPS: for ingress endpoints you can manage multiple namespace creating an A reco
 in my case i have the home dns as ```h4x0r3d.lan```  
 and ```*.ing.h4x0r3d.lan``` as a record A of my kubernetes ingress  
 in this way if i create a namespace *pippo* the dns that i have to call to reach it out will be *pippo.ing.4x0r3d.lan* with no change on DNS. 
+<br/><br/>
+<br/><br/>
+### Usage
+
+The application answer on /api/ with the main html page with methods  
+
+| HTTP Method |                       URI                       | Action                     |
+|-------------|:-----------------------------------------------:|----------------------------|
+| GET         | http://[hostname]/api/v1.0/context              | Retrieve list of context   |
+| GET         | http://[hostname]/api/v1.0/context/[context_id] | Retrieve a context         |
+| POST        | http://[hostname]/api/v1.0/context              | Create a new context       |
+| PUT         | http://[hostname]/api/v1.0/context/[context_id] | Update an existing context |
+| DELETE      | http://[hostname]/api/v1.0/context/[context_id] | Delete acontext            |  
+
+Following the methods example 
+
+```
+$ curl -i http://pytbak.ing.h4x0r3d.lan/api/v1.0/context
+HTTP/1.1 200 OK
+Server: openresty/1.15.8.1
+Date: Wed, 28 Oct 2020 20:02:02 GMT
+Content-Type: application/json
+Content-Length: 696
+Connection: keep-alive
+Vary: Accept-Encoding
+
+{
+  "context": [
+    {
+      "description": "RHEL 6 based",
+      "done": false,
+      "title": "Cento 6",
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/1"
+    },
+    {
+      "description": "RHEL 7 based",
+      "done": false,
+      "title": "Centos 7",
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/2"
+    },
+    {
+      "description": "RHEL 8 based",
+      "done": false,
+      "title": "Centos 8",
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/3"
+    },
+    {
+      "description": "Fedora + RHEL based",
+      "done": false,
+      "title": "Centos stream",
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/4"
+    }
+  ]
+```  
+<br/><br/>
+```
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Ubuntu 20.04 LTS", "description":"focal"}' http://pytbak.ing.h4x0r3d.lan/api/v1.0/context
+HTTP/1.1 201 CREATED
+Server: openresty/1.15.8.1
+Date: Wed, 28 Oct 2020 19:49:31 GMT
+Content-Type: application/json
+Content-Length: 165
+Connection: keep-alive
+
+{
+  "task": {
+    "description": "focal",
+    "done": false,
+    "title": "Ubuntu 20.04 LTS",
+    "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5"
+  }
+}
+```
+<br/><br/>
+
+```
+$ curl -i -H "Content-Type: application/json" -X PUT -d '{"description":"Focal Fossa"}' http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+HTTP/1.1 200 OK
+Server: openresty/1.15.8.1
+Date: Wed, 28 Oct 2020 20:02:43 GMT
+Content-Type: application/json
+Content-Length: 171
+Connection: keep-alive
+
+{
+  "task": {
+    "description": "Focal Fossa",
+    "done": false,
+    "title": "Ubuntu 20.04 LTS",
+    "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5"
+  }
+}
+```
+<br/><br/>
+
+```
+$ curl -i -H "Content-Type: application/json" -X DELETE http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+HTTP/1.1 200 OK
+Server: openresty/1.15.8.1
+Date: Wed, 28 Oct 2020 20:04:47 GMT
+Content-Type: application/json
+Content-Length: 21
+Connection: keep-alive
+
+{
+  "result": true
+}
+$ curl -i http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+HTTP/1.1 404 NOT FOUND
+Server: openresty/1.15.8.1
+Date: Wed, 28 Oct 2020 20:04:54 GMT
+Content-Type: application/json
+Content-Length: 27
+Connection: keep-alive
+
+{
+  "error": "Not found"
+}
+```
+
 
