@@ -53,19 +53,19 @@ def make_public_task(task):
             new_task[field] = task[field]
     return new_task
     
-@app.route('/api/v1.0/context', methods = ['GET'])
+@app.route('/api/get/context', methods = ['GET'])
 def get_context():
     return jsonify( { 'context': list(map(make_public_task, context)) } )
 
 
-@app.route('/api/v1.0/context/<int:task_id>', methods = ['GET'])
+@app.route('/api/get/context/<int:task_id>', methods = ['GET'])
 def get_task(task_id):
     task = list(filter(lambda t: t['id'] == task_id, context))
     if len(task) == 0:
         abort(404)
     return jsonify( { 'task': make_public_task(task[0]) } )
 
-@app.route('/api/v1.0/context', methods = ['POST'])
+@app.route('/api/post/context', methods = ['POST'])
 def create_task():
     if not request.json or not 'title' in request.json:
         abort(400)
@@ -78,7 +78,7 @@ def create_task():
     context.append(task)
     return jsonify( { 'task': make_public_task(task) } ), 201
 
-@app.route('/api/v1.0/context/<int:task_id>', methods = ['PUT'])
+@app.route('/api/put/context/<int:task_id>', methods = ['PUT'])
 def update_task(task_id):
     task = list(filter(lambda t: t['id'] == task_id, context))
     if len(task) == 0:
@@ -96,7 +96,7 @@ def update_task(task_id):
     task[0]['done'] = request.json.get('done', task[0]['done'])
     return jsonify( { 'task': make_public_task(task[0]) } )
     
-@app.route('/api/v1.0/context/<int:task_id>', methods = ['DELETE'])
+@app.route('/api/delete/context/<int:task_id>', methods = ['DELETE'])
 def delete_task(task_id):
     task = list(filter(lambda t: t['id'] == task_id, context))
     if len(task) == 0:
