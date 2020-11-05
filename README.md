@@ -63,18 +63,18 @@ in this way if i create a namespace *pippo* the dns that i have to call to reach
 
 The application answer on /api/ with the main html page with methods  
 
-| HTTP Method |                       URI                       | Action                     |
-|-------------|:-----------------------------------------------:|----------------------------|
-| GET         | http://[hostname]/api/v1.0/context              | Retrieve list of context   |
-| GET         | http://[hostname]/api/v1.0/context/[context_id] | Retrieve a context         |
-| POST        | http://[hostname]/api/v1.0/context              | Create a new context       |
-| PUT         | http://[hostname]/api/v1.0/context/[context_id] | Update an existing context |
-| DELETE      | http://[hostname]/api/v1.0/context/[context_id] | Delete acontext            |  
+| HTTP Method |                       URI                         | Action                     |
+|-------------|:-------------------------------------------------:|----------------------------|
+| GET         | http://[hostname]/api/get/context                 | Retrieve list of context   |
+| GET         | http://[hostname]/api/get/context/[context_id]    | Retrieve a context         |
+| POST        | http://[hostname]/api/post/context                | Create a new context       |
+| PUT         | http://[hostname]/api/put/context/[context_id]    | Update an existing context |
+| DELETE      | http://[hostname]/api/delete/context/[context_id] | Delete acontext            |  
 
 Following the methods example 
 
 ```
-$ curl -i http://pytbak.ing.h4x0r3d.lan/api/v1.0/context
+$ curl -i http://pytbak.ing.h4x0r3d.lan/api/get/context
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.1
 Date: Wed, 28 Oct 2020 20:02:02 GMT
@@ -89,31 +89,31 @@ Vary: Accept-Encoding
       "description": "RHEL 6 based",
       "done": false,
       "title": "Cento 6",
-      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/1"
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/1"
     },
     {
       "description": "RHEL 7 based",
       "done": false,
       "title": "Centos 7",
-      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/2"
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/2"
     },
     {
       "description": "RHEL 8 based",
       "done": false,
       "title": "Centos 8",
-      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/3"
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/3"
     },
     {
       "description": "Fedora + RHEL based",
       "done": false,
       "title": "Centos stream",
-      "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/4"
+      "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/4"
     }
   ]
 ```  
 <br/><br/>
 ```
-$ curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Ubuntu 20.04 LTS", "description":"focal"}' http://pytbak.ing.h4x0r3d.lan/api/v1.0/context
+$ curl -i -H "Content-Type: application/json" -X POST -d '{"title":"Ubuntu 20.04 LTS", "description":"focal"}' http://pytbak.ing.h4x0r3d.lan/api/post/context
 HTTP/1.1 201 CREATED
 Server: openresty/1.15.8.1
 Date: Wed, 28 Oct 2020 19:49:31 GMT
@@ -133,7 +133,7 @@ Connection: keep-alive
 <br/><br/>
 
 ```
-$ curl -i -H "Content-Type: application/json" -X PUT -d '{"description":"Focal Fossa"}' http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+$ curl -i -H "Content-Type: application/json" -X PUT -d '{"description":"Focal Fossa"}' http://pytbak.ing.h4x0r3d.lan/api/put/context/5
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.1
 Date: Wed, 28 Oct 2020 20:02:43 GMT
@@ -146,14 +146,14 @@ Connection: keep-alive
     "description": "Focal Fossa",
     "done": false,
     "title": "Ubuntu 20.04 LTS",
-    "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5"
+    "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/5"
   }
 }
 ```
 <br/><br/>
 
 ```
-$ curl -i -H "Content-Type: application/json" -X DELETE http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+$ curl -i -H "Content-Type: application/json" -X DELETE http://pytbak.ing.h4x0r3d.lan/api/delete/context/5
 HTTP/1.1 200 OK
 Server: openresty/1.15.8.1
 Date: Wed, 28 Oct 2020 20:04:47 GMT
@@ -164,7 +164,7 @@ Connection: keep-alive
 {
   "result": true
 }
-$ curl -i http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5
+$ curl -i http://pytbak.ing.h4x0r3d.lan/api/get/context/5
 HTTP/1.1 404 NOT FOUND
 Server: openresty/1.15.8.1
 Date: Wed, 28 Oct 2020 20:04:54 GMT
