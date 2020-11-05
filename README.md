@@ -126,7 +126,7 @@ Connection: keep-alive
     "description": "focal",
     "done": false,
     "title": "Ubuntu 20.04 LTS",
-    "uri": "http://pytbak.ing.h4x0r3d.lan/api/v1.0/context/5"
+    "uri": "http://pytbak.ing.h4x0r3d.lan/api/get/context/5"
   }
 }
 ```
