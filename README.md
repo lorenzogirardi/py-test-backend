@@ -179,12 +179,12 @@ Connection: keep-alive
 
     
 ### metrics
-applications A and B are supporting /metrics endpoint
+application supports /metrics endpoint
 ```
 $ curl localhost:5000/metrics
 # HELP python_gc_objects_collected_total Objects collected during gc
 # TYPE python_gc_objects_collected_total counter
-python_gc_objects_collected_total{generation="0"} 117.0
+python_gc_objects_collected_total{generation="0"} 180.0
 python_gc_objects_collected_total{generation="1"} 316.0
 python_gc_objects_collected_total{generation="2"} 0.0
 # HELP python_gc_objects_uncollectable_total Uncollectable object found during GC
@@ -197,12 +197,15 @@ python_gc_objects_uncollectable_total{generation="2"} 0.0
 python_gc_collections_total{generation="0"} 75.0
 python_gc_collections_total{generation="1"} 6.0
 python_gc_collections_total{generation="2"} 0.0
+# HELP python_info Python platform information
+# TYPE python_info gauge
+python_info{implementation="CPython",major="3",minor="9",patchlevel="6",version="3.9.6"} 1.0
 etc etc ...
 ```      
     
 ### logs
 
-applications A and B has a log handler that write INFO in /var/log/app.log
+application has a log handler that write INFO in /var/log/app.log
 ```
 $ docker exec -ti 5a6205570016 cat /var/log/app.log
 2021-08-17 11:42:32,759 INFO werkzeug MainThread :  * Running on http://172.17.0.2:5000/ (Press CTRL+C to quit)
@@ -215,7 +218,7 @@ $ docker exec -ti 5a6205570016 cat /var/log/app.log
 2021-08-17 11:49:30,101 INFO werkzeug Thread-7 : 172.17.0.1 - - [17/Aug/2021 11:49:30] "GET /metrics HTTP/1.1" 200 -
 2021-08-17 11:49:41,133 INFO werkzeug Thread-8 : 172.17.0.1 - - [17/Aug/2021 11:49:41] "GET /metrics HTTP/1.1" 200 -
 2021-08-17 11:51:52,795 INFO werkzeug Thread-9 : 172.17.0.1 - - [17/Aug/2021 11:51:52] "GET /A/get/context/error HTTP/1.1" 404 -
-2021-08-17 11:51:57,628 INFO werkzeug Thread-10 : 172.17.0.1 - - [17/Aug/2021 11:51:57] "GET /A/get/context/nocontext HTTP/1.1" 404 -
+2021-08-17 11:51:57,628 INFO werkzeug Thread-10 : 172.17.0.1 - - [17/Aug/2021 11:51:57] "GET /A/get/context/nocontext HTTP/1.1" 4
 ```
 
 
