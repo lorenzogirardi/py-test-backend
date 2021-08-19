@@ -1,8 +1,13 @@
 #!flask/bin/python
 from flask import Flask, jsonify, abort, request, make_response, url_for, render_template
+from prometheus_flask_exporter import PrometheusMetrics
+import logging
+
 
 app = Flask(__name__, static_url_path = "")
+metrics = PrometheusMetrics(app)
 
+logging.basicConfig(filename = '/var/log/app.log', level=logging.INFO, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
 
     
 @app.errorhandler(400)
