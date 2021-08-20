@@ -218,7 +218,7 @@ $ docker exec -ti 5a6205570016 cat /var/log/app.log
 2021-08-17 11:49:30,101 INFO werkzeug Thread-7 : 172.17.0.1 - - [17/Aug/2021 11:49:30] "GET /metrics HTTP/1.1" 200 -
 2021-08-17 11:49:41,133 INFO werkzeug Thread-8 : 172.17.0.1 - - [17/Aug/2021 11:49:41] "GET /metrics HTTP/1.1" 200 -
 2021-08-17 11:51:52,795 INFO werkzeug Thread-9 : 172.17.0.1 - - [17/Aug/2021 11:51:52] "GET /A/get/context/error HTTP/1.1" 404 -
-2021-08-17 11:51:57,628 INFO werkzeug Thread-10 : 172.17.0.1 - - [17/Aug/2021 11:51:57] "GET /A/get/context/nocontext HTTP/1.1" 4
+2021-08-17 11:51:57,628 INFO werkzeug Thread-10 : 172.17.0.1 - - [17/Aug/2021 11:51:57] "GET /A/get/context/nocontext HTTP/1.1" 404 -  
 ```
 
 
