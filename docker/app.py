@@ -111,6 +111,17 @@ def delete_task(task_id):
         abort(404)
     context.remove(task[0])
     return jsonify( { 'result': True } )
+
+@app.route('/fib/<int:x>')
+def fib(x):
+    return str(calcfib(x))
+def calcfib(n):
+    if n == 0:
+        return 0
+    b, a = 0, 1             # b, a initialized as F(0), F(1)
+    for i in range(1,n) :
+        b, a = a, a+b       # b, a always store F(i-1), F(i) 
+    return a
     
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
