@@ -112,7 +112,7 @@ def delete_task(task_id):
     context.remove(task[0])
     return jsonify( { 'result': True } )
 
-@app.route('/fib/<int:x>')
+@app.route('/api/fib/<int:x>')
 def fib(x):
     return str(calcfib(x))
 def calcfib(n):
