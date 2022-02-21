@@ -56,7 +56,7 @@ TIPS: for ingress endpoints you can manage multiple namespace creating an A reco
 
 in my case i have the home dns as ```h4x0r3d.lan```  
 and ```*.ing.h4x0r3d.lan``` as a record A of my kubernetes ingress  
-in this way if i create a namespace *pippo* the dns that i have to call to reach it out will be *pippo.ing.4x0r3d.lan* with no change on DNS. 
+in this way if i create a namespace *pippo* the dns that i have to call to reach it out will be *pippo.ing.4x0r3d.lan* with no change on DNS.
 <br/><br/>
 <br/><br/>
 ### Usage
@@ -70,8 +70,9 @@ The application answer on /api/ with the main html page with methods
 | POST        | http://[hostname]/api/post/context                | Create a new context       |
 | PUT         | http://[hostname]/api/put/context/[context_id]    | Update an existing context |
 | DELETE      | http://[hostname]/api/delete/context/[context_id] | Delete acontext            |  
+| GET         | http://[hostname]/api/fib/[number]                | Generate Fibonacci         |
 
-Following the methods example 
+Following the methods example
 
 ```
 $ curl -i http://pytbak.ing.h4x0r3d.lan/api/get/context
@@ -176,8 +177,21 @@ Connection: keep-alive
   "error": "Not found"
 }
 ```
+<br/><br/>  
 
-    
+```
+$ curl -i localhost:5000/api/fib/100
+HTTP/1.0 200 OK
+Content-Type: text/html; charset=utf-8
+Content-Length: 21
+Server: Werkzeug/2.0.3 Python/3.9.10
+Date: Mon, 21 Feb 2022 15:16:32 GMT
+
+354224848179261915075
+```
+
+
+
 ### metrics
 application supports /metrics endpoint
 ```
@@ -202,7 +216,7 @@ python_gc_collections_total{generation="2"} 0.0
 python_info{implementation="CPython",major="3",minor="9",patchlevel="6",version="3.9.6"} 1.0
 etc etc ...
 ```      
-    
+
 ### logs
 
 application has a log handler that write INFO in /var/log/app.log
@@ -220,5 +234,3 @@ $ docker exec -ti 5a6205570016 cat /var/log/app.log
 2021-08-17 11:51:52,795 INFO werkzeug Thread-9 : 172.17.0.1 - - [17/Aug/2021 11:51:52] "GET /A/get/context/error HTTP/1.1" 404 -
 2021-08-17 11:51:57,628 INFO werkzeug Thread-10 : 172.17.0.1 - - [17/Aug/2021 11:51:57] "GET /A/get/context/nocontext HTTP/1.1" 404 -  
 ```
-
-
