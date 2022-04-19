@@ -10,7 +10,14 @@ metrics = PrometheusMetrics(app)
 Compress(app)
 
 
-logging.basicConfig(filename = '/var/log/app.log', level=logging.INFO, format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s')
+logging.basicConfig(
+	level=logging.INFO, 
+	format=f'%(asctime)s %(levelname)s %(name)s %(threadName)s : %(message)s',
+	handlers=[
+     	   logging.FileHandler("/var/log/app.log"),
+           logging.StreamHandler()
+    ]
+)
 
     
 @app.errorhandler(400)
