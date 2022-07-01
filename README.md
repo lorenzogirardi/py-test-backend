@@ -191,6 +191,24 @@ Date: Mon, 21 Feb 2022 15:16:32 GMT
 ```
 
 
+<br/><br/>  
+
+```
+$ time curl localhost:5000/api/sleep/5
+HTTP/1.1 200 OK
+Server: Werkzeug/2.1.2 Python/3.9.13
+Date: Fri, 01 Jul 2022 16:24:04 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 20
+Vary: Accept-Encoding
+Connection: close
+
+delayed by 5 seconds
+real	0m5.014s
+user	0m0.005s
+sys	0m0.005s
+```
+
 
 ### metrics
 application supports /metrics endpoint
