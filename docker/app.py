@@ -1,4 +1,5 @@
 #!flask/bin/python
+import time
 from flask import Flask, jsonify, abort, request, make_response, url_for, render_template
 from prometheus_flask_exporter import PrometheusMetrics
 import logging
@@ -129,6 +130,12 @@ def calcfib(n):
     for i in range(1,n) :
         b, a = a, a+b       # b, a always store F(i-1), F(i) 
     return a
+
+@app.route('/api/sleep/<int:x>')
+def delay(x):
+    time.sleep(x)
+    return "delayed by " +(str(x)) +" seconds"
+
     
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
