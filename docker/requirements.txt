@@ -1,4 +1,4 @@
 Flask
 prometheus-flask-exporter
 flask-compress
-
+opentelemetry-distro
