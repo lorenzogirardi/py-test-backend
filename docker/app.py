@@ -6,7 +6,25 @@ import logging
 from flask_compress import Compress
 
 
+from opentelemetry import trace
+from opentelemetry.instrumentation.flask import FlaskInstrumentor
+from opentelemetry.instrumentation.urllib import URLLibInstrumentor
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import (
+    ConsoleSpanExporter,
+    BatchSpanProcessor,
+)
+
+trace.set_tracer_provider(TracerProvider())
+trace.get_tracer_provider().add_span_processor(
+    BatchSpanProcessor(ConsoleSpanExporter())
+)
+tracer = trace.get_tracer(__name__)
+
+
 app = Flask(__name__, static_url_path = "")
+FlaskInstrumentor().instrument_app(app)
+URLLibInstrumentor().instrument()
 metrics = PrometheusMetrics(app)
 Compress(app)
 
@@ -58,7 +76,11 @@ context = [
 
 @app.route('/api/')
 def index():
-    return render_template('index.html')
+#    with tracer.start_as_current_span(
+#        "server_request",
+#        attributes={"endpoint": "/api"}
+#    ):
+        return render_template('index.html')
 
 def make_public_task(task):
     new_task = {}

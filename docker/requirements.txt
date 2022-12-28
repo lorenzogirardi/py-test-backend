@@ -1,4 +1,7 @@
 Flask
 prometheus-flask-exporter
 flask-compress
-
+opentelemetry-api
+opentelemetry-sdk
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-urllib
