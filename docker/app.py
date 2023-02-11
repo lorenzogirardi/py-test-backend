@@ -4,12 +4,22 @@ from flask import Flask, jsonify, abort, request, make_response, url_for, render
 from prometheus_flask_exporter import PrometheusMetrics
 import logging
 from flask_compress import Compress
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
+
 
 
 app = Flask(__name__, static_url_path = "")
 metrics = PrometheusMetrics(app)
 Compress(app)
 
+limiter = Limiter(
+	get_remote_address,
+	app=app,
+#	default_limits=["60 per minute"],
+	storage_uri="memory://",
+)
 
 logging.basicConfig(
 	level=logging.INFO, 
@@ -59,6 +69,8 @@ context = [
 @app.route('/api/')
 def index():
     return render_template('index.html')
+
+
 
 def make_public_task(task):
     new_task = {}
@@ -121,6 +133,7 @@ def delete_task(task_id):
     return jsonify( { 'result': True } )
 
 @app.route('/api/fib/<int:x>')
+@limiter.limit("28 per second")
 def fib(x):
     return str(calcfib(x))
 def calcfib(n):
