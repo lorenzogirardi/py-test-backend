@@ -4,7 +4,8 @@ from flask import Flask, jsonify, abort, request, make_response, url_for, render
 from prometheus_flask_exporter import PrometheusMetrics
 import logging
 from flask_compress import Compress
-
+from redis import Redis
+from os import getenv
 
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -21,6 +22,10 @@ trace.get_tracer_provider().add_span_processor(
 )
 tracer = trace.get_tracer(__name__)
 
+REDIS_HOST = getenv("REDIS_HOST", default="localhost")
+REDIS_PORT = getenv("REDIS_PORT", default=6379)
+REDIS_DB = getenv("REDIS_DB", default=0)
+r = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
 app = Flask(__name__, static_url_path = "")
 FlaskInstrumentor().instrument_app(app)
@@ -158,6 +163,11 @@ def delay(x):
     time.sleep(x)
     return "delayed by " +(str(x)) +" seconds"
 
+@app.route('/api/count')
+def count():
+    r.incr('hits')
+    counter = str(r.get('hits'),'utf-8')
+    return counter
     
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
