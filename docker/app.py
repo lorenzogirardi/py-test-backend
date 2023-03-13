@@ -6,6 +6,9 @@ import logging
 from flask_compress import Compress
 from redis import Redis
 from os import getenv
+import requests
+from flask import Response
+
 
 from opentelemetry import trace
 from opentelemetry.instrumentation.flask import FlaskInstrumentor
@@ -168,7 +171,16 @@ def count():
     r.incr('hits')
     counter = str(r.get('hits'),'utf-8')
     return counter
-    
+
+@app.route('/api/redisping')
+def ping():
+    wd = requests.get("http://webdis-svc.webdis:7379/PING")
+    return Response(
+        wd.text,
+        status=wd.status_code,
+#        content_type=wd.headers['content-type'],
+    )   
+ 
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
 
