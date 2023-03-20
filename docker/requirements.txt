@@ -2,3 +2,5 @@ Flask
 prometheus-flask-exporter
 flask-compress
 redis
+requests
+flask_zipkin

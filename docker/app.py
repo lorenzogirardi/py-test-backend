@@ -6,18 +6,24 @@ import logging
 from flask_compress import Compress
 from redis import Redis
 from os import getenv
+import requests
+from flask import Response
+from requests import get
+from flask_zipkin import Zipkin
 
 
 app = Flask(__name__, static_url_path = "")
 metrics = PrometheusMetrics(app)
 Compress(app)
 
+zipkin = Zipkin(app, sample_rate=100)
+
 
 REDIS_HOST = getenv("REDIS_HOST", default="localhost")
 REDIS_PORT = getenv("REDIS_PORT", default=6379)
 REDIS_DB = getenv("REDIS_DB", default=0)
 r = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
-
+SITE_NAME = 'http://webdis-svc.webdis:7379'
 
 logging.basicConfig(
 	level=logging.INFO, 
@@ -149,7 +155,21 @@ def count():
     r.incr('hits')
     counter = str(r.get('hits'),'utf-8')
     return counter
-    
+
+#@app.route('/api/redisping')
+#def ping():
+#    wd = requests.get("http://webdis-svc.webdis:7379/PING")
+#    return Response(
+#        wd.text,
+#        status=wd.status_code,
+#    )
+ 
+@app.route('/api/redisping')
+def proxy():
+    headers = {}
+    headers.update(zipkin.create_http_headers_for_new_span())
+    return get(f'{SITE_NAME}/ping', headers=headers).content
+   
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
 
