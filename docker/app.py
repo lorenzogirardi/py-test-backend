@@ -8,6 +8,8 @@ from redis import Redis
 from os import getenv
 import requests
 from flask import Response
+from requests import get
+from flask_zipkin import Zipkin
 
 
 from opentelemetry import trace
@@ -29,12 +31,16 @@ REDIS_HOST = getenv("REDIS_HOST", default="localhost")
 REDIS_PORT = getenv("REDIS_PORT", default=6379)
 REDIS_DB = getenv("REDIS_DB", default=0)
 r = Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+SITE_NAME = getenv("SITE_NAME", default="http://webdis-svc.webdis:7379")
+URL = getenv("URL", default="https://services.k8s.it")
 
 app = Flask(__name__, static_url_path = "")
 FlaskInstrumentor().instrument_app(app)
 URLLibInstrumentor().instrument()
 metrics = PrometheusMetrics(app)
 Compress(app)
+
+zipkin = Zipkin(app, sample_rate=100)
 
 
 logging.basicConfig(
@@ -173,13 +179,16 @@ def count():
     return counter
 
 @app.route('/api/redisping')
-def ping():
-    wd = requests.get("http://webdis-svc.webdis:7379/PING")
-    return Response(
-        wd.text,
-        status=wd.status_code,
-#        content_type=wd.headers['content-type'],
-    )   
+def proxy():
+    headers = {}
+    headers.update(zipkin.create_http_headers_for_new_span())
+    return get(f'{SITE_NAME}/ping', headers=headers).content
+
+@app.route('/api/extstatus')
+def proxyext():
+    headers = {}
+    headers.update(zipkin.create_http_headers_for_new_span())
+    return get(f'{URL}/', verify=False, headers=headers).content
  
 if __name__ == "__main__":
     app.run(debug=False, host="0.0.0.0")
