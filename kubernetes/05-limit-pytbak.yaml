@@ -1,0 +1,14 @@
+kind: LimitRange
+apiVersion: v1
+metadata:
+  name: limit
+  namespace: pytbak
+spec:
+  limits:
+  - default:
+      cpu: "350m"
+      memory: 300Mi
+    defaultRequest:
+      cpu: "50m"
+      memory: 150Mi
+    type: Container
