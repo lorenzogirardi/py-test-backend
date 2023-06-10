@@ -37,23 +37,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GIT_TOKEN }}
       
-#      - name: Build image and push to Docker Hub and GitHub Container Registry
-#        uses: docker/build-push-action@v2
-#        with:
-#          # relative path to the place where source code with Dockerfile is located
-#          context: ./docker
-#          # Note: tags has to be all lower-case
-#          tags: |
-#            lgirardi/pytbak:latest 
-#          # build on feature branches, push only on main branch
-#          push: ${{ github.ref == 'refs/heads/main' }}
-      - name: Build and push Docker image
+      - name: Build image and push to Docker Hub and GitHub Container Registry
         uses: docker/build-push-action@v2
         with:
+          # relative path to the place where source code with Dockerfile is located
           context: ./docker
-          push: ${{ github.event.base_ref =='refs/heads/main' && github.ref_type == 'tag' && !startsWith(github.ref, 'refs/tags/v0.')}}
-          tags: ${{ steps.metadata.outputs.tags }}
-          labels: ${{ steps.metadata.outputs.labels }}
-
+          # Note: tags has to be all lower-case
+          tags: |
+            lgirardi/pytbak:latest 
+          # build on feature branches, push only on main branch
+          push: ${{ github.ref == 'refs/heads/main' }}
+          run docker push lgirardi/pytbak:latest
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
