@@ -44,7 +44,7 @@ jobs:
           context: ./docker
           # Note: tags has to be all lower-case
           tags: |
-            pytbak:latest 
+            lgirardi/pytbak:latest 
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
 
