@@ -47,6 +47,6 @@ jobs:
             lgirardi/pytbak:latest 
           # build on feature branches, push only on main branch
           push: ${{ github.ref == 'refs/heads/main' }}
-          run docker push lgirardi/pytbak:latest
+          run: docker push lgirardi/pytbak:latest
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
