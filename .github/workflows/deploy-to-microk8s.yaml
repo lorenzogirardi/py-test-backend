@@ -1,0 +1,16 @@
+name: deploy rolloutrestart
+
+on:
+  workflow_run:
+    workflows: ["Build and Publish"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: self-hosted
+
+    steps:
+    - name: deploy 
+      run: |
+      microk8s kubectl --kubeconfig  /opt/actions-runner/config rollout restart deployment/pyapp-pytbak-helm-pytbak-stable -n pyapp
