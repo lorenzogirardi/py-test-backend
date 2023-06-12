@@ -13,4 +13,4 @@ jobs:
     steps:
     - name: deploy 
       run: |
-      microk8s kubectl --kubeconfig  /opt/actions-runner/config rollout restart deployment/pyapp-pytbak-helm-pytbak-stable -n pyapp
+        microk8s kubectl --kubeconfig  /opt/actions-runner/config rollout restart deployment/pyapp-pytbak-helm-pytbak-stable -n pyapp
