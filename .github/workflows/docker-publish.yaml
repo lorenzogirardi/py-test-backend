@@ -5,6 +5,9 @@ on:
     branches:
       - dependencies
   workflow_dispatch:
+    branches:
+      - main
+      - dependencies
 
 jobs:
   # define job to build and publish docker image
