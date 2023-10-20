@@ -6,7 +6,13 @@
 version: 2
 updates:
   - package-ecosystem: "pip" # See documentation for possible values
-    directory: "/Docker/" # Location of package manifests
+    directory: "/docker/" # Location of package manifests
     schedule:
       interval: "weekly"
     target-branch: "dependencies"
+  - package-ecosystem: "docker"
+    directory: "/docker/"
+    schedule:
+      interval: "weekly"
+    target-branch: "dependencies"
+  
