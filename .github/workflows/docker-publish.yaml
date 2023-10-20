@@ -4,10 +4,9 @@ on:
   pull_request:
     branches:
       - dependencies
+      - master
   workflow_dispatch:
-    branches:
-      - main
-      - dependencies
+
 
 jobs:
   # define job to build and publish docker image
